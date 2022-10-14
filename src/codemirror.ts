@@ -165,9 +165,11 @@ export class CodeBlockView {
       selectNode() { this.cm.focus() }
       stopEvent() { return true }
     }
-/*
-    function arrowHandler(dir: string) {
-        return (state, dispatch, view) => {
+  
+    import {EditorState,Transaction,Command} from 'prosemirror-state'
+    
+     function arrowHandler(dir:  "up" | "down" | "left" | "right" | "forward" | "backward") {
+        const fn =  (state: EditorState, dispatch: (tr: Transaction) => void, view: EditorView) : boolean => {
           if (state.selection.empty && view.endOfTextblock(dir)) {
             let side = dir == "left" || dir == "up" ? -1 : 1
             let $head = state.selection.$head
@@ -179,13 +181,14 @@ export class CodeBlockView {
             }
           }
           return false
-        }
+        } 
+        return fn as Command
       }
       
-      const arrowHandlers = keymap({
+      export const arrowHandlers = keymap({
         ArrowLeft: arrowHandler("left"),
         ArrowRight: arrowHandler("right"),
         ArrowUp: arrowHandler("up"),
         ArrowDown: arrowHandler("down")
       })
-      */
+      

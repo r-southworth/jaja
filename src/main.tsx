@@ -15,14 +15,14 @@ import { schema } from "prosemirror-schema-basic"
 import { addListNodes } from "prosemirror-schema-list"
 import { exampleSetup } from "prosemirror-example-setup"
 import { mySchema } from "./schema"
-import {CodeBlockView} from "./codemirror"
+import {CodeBlockView,arrowHandlers} from "./codemirror"
 
 let editor = document.querySelector("#editor")!
 let content = document.querySelector("#content")!
 let view = new EditorView(editor, {
   state: EditorState.create({
     doc: DOMParser.fromSchema(mySchema).parse(content),
-    plugins: exampleSetup({ schema: mySchema })
+    plugins: exampleSetup({ schema: mySchema }).concat(arrowHandlers)
   }),
   nodeViews: {code_block: (node, view, getPos) => new CodeBlockView(node, view, getPos)}
 })
