@@ -14,20 +14,17 @@ import { Schema, DOMParser, DOMSerializer } from "prosemirror-model"
 import { schema } from "prosemirror-schema-basic"
 import { addListNodes } from "prosemirror-schema-list"
 import { exampleSetup } from "prosemirror-example-setup"
+import { mySchema } from "./schema"
+import {CodeBlockView} from "./codemirror"
 
-// Mix the nodes from prosemirror-schema-list into the basic schema to
-// create a schema with list support.
-const mySchema = new Schema({
-  nodes: addListNodes(schema.spec.nodes, "paragraph block*", "block"),
-  marks: schema.spec.marks
-});
 let editor = document.querySelector("#editor")!
 let content = document.querySelector("#content")!
 let view = new EditorView(editor, {
   state: EditorState.create({
     doc: DOMParser.fromSchema(mySchema).parse(content),
     plugins: exampleSetup({ schema: mySchema })
-  })
+  }),
+  nodeViews: {code_block: (node, view, getPos) => new CodeBlockView(node, view, getPos)}
 })
 
 let search = document.querySelector('#search') as HTMLInputElement;

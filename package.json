@@ -9,6 +9,10 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@codemirror/commands": "^6.1.2",
+    "@codemirror/lang-javascript": "^6.1.0",
+    "@codemirror/state": "^6.1.2",
+    "@codemirror/view": "^6.3.1",
     "prosemirror-example-setup": "^1.2.1",
     "prosemirror-model": "^1.18.1",
     "prosemirror-schema-basic": "^1.2.0",
