@@ -63,7 +63,7 @@ export class CodeBlockView {
         ]
       })
   
-      var lang = node.attrs['language']
+    
       // The editor's outer node is our DOM representation
       this.dom = document.createElement("div")
       this.dom.className = "cm-wrapper"
