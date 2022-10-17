@@ -19,6 +19,8 @@ import { TextSelection, Selection } from "prosemirror-state"
 import { mySchema } from "./schema"
 import { ViewUpdate } from "@codemirror/view"
 
+import maplibregl from 'maplibre-gl' 
+
 
 import {Transaction as CmTransaction} from '@codemirror/state'
 
