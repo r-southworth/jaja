@@ -1,7 +1,9 @@
 import { EditorView as CodeMirrorEditorView, keymap as cmKeymap, drawSelection , KeyBinding} from "@codemirror/view"
 import { SelectionRange,  } from "@codemirror/state"
+import { lineNumbers } from "@codemirror/view"
 
 import { javascript } from "@codemirror/lang-javascript"
+import { markdown } from "@codemirror/lang-markdown"
 import {defaultKeymap} from "@codemirror/commands"
 import {syntaxHighlighting, defaultHighlightStyle} from "@codemirror/language"
 
@@ -20,6 +22,8 @@ import { mySchema } from "./schema"
 import { ViewUpdate } from "@codemirror/view"
 
 import maplibregl from 'maplibre-gl' 
+import {Map} from 'maplibre-gl'
+import { v4 as uuidv4 } from 'uuid';
 
 
 import {Transaction as CmTransaction} from '@codemirror/state'
@@ -45,20 +49,30 @@ export class CodeBlockView {
       this.cm = new CodeMirrorEditorView({
         doc: this.nodepm.textContent,
         extensions: [
+          drawSelection(),
+          syntaxHighlighting(defaultHighlightStyle),
+          lineNumbers(),
+          javascript(),
+          markdown(),
+          CodeMirrorEditorView.updateListener.of(update => this.forwardUpdate(update)),
           cmKeymap.of([
             ...this.codeMirrorKeymap(),
             ...defaultKeymap
           ]),
-          drawSelection(),
-          syntaxHighlighting(defaultHighlightStyle),
-          javascript(),
-          CodeMirrorEditorView.updateListener.of(update => this.forwardUpdate(update))
+         
         ]
       })
   
+      var lang = node.attrs['language']
       // The editor's outer node is our DOM representation
-      this.dom = this.cm.dom
-  
+      this.dom = document.createElement("div")
+      this.dom.className = "cm-wrapper"
+
+      var show = document.createElement("div")
+      show.id = uuidv4()
+      show.classList.add("cm-show") 
+      this.dom.appendChild(show)
+
       // This flag is used to avoid an update loop between the outer and
       // inner editor
       this.updating = false
